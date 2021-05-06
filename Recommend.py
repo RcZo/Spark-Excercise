@@ -26,17 +26,14 @@ def SetLogger( sc ):
 def PrepareData(sc): 
     print("Read movie ID & Name")
     itemRDD = sc.textFile(Path+"data/u.item") 
-    movieTitle= itemRDD.map( lambda line : line.split("|"))     \
-                                   .map(lambda a: (float(a[0]),a[1]))       \
-                                   .collectAsMap()                          
+    movieTitle= itemRDD.map( lambda line : line.split("|")).map(lambda a: (float(a[0]),a[1])).collectAsMap()                          
     return(movieTitle)
 
 def RecommendMovies(model, movieTitle, inputUserID): 
     RecommendMovie = model.recommendProducts(inputUserID, 10) 
     print("For user" + str(inputUserID) + "recommend:")
     for rmd in RecommendMovie:
-        print  "For user {0} recommend {1} socre {2}". \
-            format( rmd[0],movieTitle[rmd[1]],rmd[2])
+        print("For user {0} recommend {1} socre {2}".format( rmd[0],movieTitle[rmd[1]],rmd[2]))
 
 def RecommendUsers(model, movieTitle, inputMovieID) :
     RecommendUser = model.recommendUsers(inputMovieID, 10) 
@@ -49,9 +46,9 @@ def RecommendUsers(model, movieTitle, inputMovieID) :
 def loadModel(sc):
     try:        
         model = MatrixFactorizationModel.load(sc, Path+"ALSmodel")
-        print "load ALSModel"
+        print("load ALSModel")
     except Exception:
-        print "Can not find model, please train the model first."
+        print("Can not find model, please train the model first.")
     return model 
 
 
