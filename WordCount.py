@@ -10,7 +10,7 @@ def SetLogger( sc ):
 def SetPath(sc):
     global Path
     if sc.master[0:5]=="local" :
-        Path="file:/home/hduser/pyspark/Project/"
+        Path="file:/home/hduser/pyspark/PythonProject/"
     else:   
         Path="hdfs://master:9000/user/hduser/"
 
@@ -32,10 +32,7 @@ if __name__ == "__main__":
     textFile = sc.textFile(Path+"data/README.md")
     print("Total: "+str(textFile.count())+"rows")
      
-    countsRDD = textFile                                     \
-                  .flatMap(lambda line: line.split(' ')) \
-                  .map(lambda x: (x, 1))                    \
-                  .reduceByKey(lambda x,y :x+y)
+    countsRDD = textFile.flatMap(lambda line: line.split(' ')).map(lambda x: (x, 1)).reduceByKey(lambda x,y :x+y)
                   
     print("Total word: "+str(countsRDD.count()))                  
     print("Save file...")
